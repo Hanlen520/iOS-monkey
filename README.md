@@ -1,59 +1,28 @@
-# FastMonkey 
+## 0912  新增iOS crashreport解析
 
-> A Swift implementation of Monkey TEST(Non-Stub) for iOS that runs on Simulator/iOS devices. 
+## 1.环境
+ Mac mini：10.12.6 
+ xcode：9.2
+ python：python3.6
 
-1.0.0.1002 支持
-1. 非插桩monkey点击事件
-2. app后台或退出检测
-3. 基于控件点击事件
-4. 自定义业务序列事件
+## 2.备注
+ - FastMonkey相关问题参照@zhangzhao_lenovo 大神的帖子：https://testerhome.com/topics/9524
+ - 相关扫盲贴：
+   - https://testerhome.com/topics/9810        
+   - http://cdn2.jianshu.io/p/2cbdb50411ae
+ - ios-deploy，用于命令安装iOS app ，https://www.npmjs.com/package/ios-deploy
+ - FastMonkey设置为非sevrer模式
 
+## 3.简单说明下脚本流程
+   自动化打包机打包->定时检测最新安装包->自动安装待测app->执行monkey->解析crash report
 
-- homepage :  https://testerhome.com/topics/9524
+## 4.脚本：
+- https://github.com/Lemonzhulixin/iOS-monkey.git
 
-## 1. Requirements
+## 5.Jenkins 部署定时任务
 
-- XCode version 8.3.0 and above.
-- iOS version 9.0 and above.
+## 6.待优化
+ - 自动获取连接的真机设备名及duid
+ - 多设备执行
 
-## 2. Starting 
-
-FastMonkey can be either started with XCode IDE or via simple xcodebuild command line. 
-
-### 2.1. Using Xcode
-
-Download the project and open the XCode project, checkout the scheme `XCTestWDUITests` and run the test case `XCTextWDRunner`
-
-### 2.2. Using XcodeBuild
-
-Open the terminal, go to the directory where contains `XCTestWD.xcodeproj` file and execute the following command:
-
-``` bash
-#
-#Change the port number to override the default port 
-#
-$ xcodebuild -project XCTestWD.xcodeproj \
-           -scheme XCTestWDUITests \
-           -destination 'platform=iOS Simulator,name=iPhone 6' \
-           XCTESTWD_PORT=8001 \
-           clean test
-```
-
-To execute Monkey for iOS device, run the following command:
-
-``` bash
-#
-#Change the port number to override the default port 
-#Specify the device name
-#
-$ iproxy 8001 8001
-
-$ xcodebuild -project XCTestWD.xcodeproj -scheme XCTestWDUITests -destination 'platform=iOS,name=(your device name)' XCTESTWD_PORT=8001 clean test
-#
-# Now server is started and listening in 8001
-# To start Monkey run:
-
-$curl -X POST -H "Content-Type:application/json" -d "{\"desiredCapabilities\":{\"deviceName\":\"xxxx\",\"platformName\":\"iOS\", \"bundleId\":\"com.PandaTV.Live-iPhone\",\"autoAcceptAlerts\":\"false\"}}"  http://127.0.0.1:8001/wd/hub/monkey
-
-
-```
+## 最后感谢@zhangzhao_lenovo 开源的FastMonkey工具，赞！
